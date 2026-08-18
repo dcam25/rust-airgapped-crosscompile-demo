@@ -1,0 +1,19 @@
+[package]
+name = "hello-world"
+version = "0.1.0"
+edition = "2021"
+description = "Air-gapped Linux->Windows cross-compile demo with cargo-auditable SBOM packaging"
+# No external crates: zero-dependency binary keeps the supply-chain
+# attack surface (and the SBOM cargo-auditable embeds) as small as possible.
+
+[[bin]]
+name = "hello-world"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3       # optimize for speed
+lto = true           # whole-program link-time optimization
+codegen-units = 1     # single codegen unit, better optimization at the cost of build time
+panic = "abort"       # smaller binary, no unwinding machinery
+strip = true          # strip symbols/debuginfo from the final binary
+overflow-checks = false
